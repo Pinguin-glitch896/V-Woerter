@@ -228,14 +228,14 @@ mark{background:var(--hl);color:inherit;border-radius:4px;padding:0 1px}
 .face{border:3px solid var(--line);background:var(--surface2);border-radius:16px;padding:8px 14px;font-size:1rem;display:flex;flex-direction:column;align-items:center;gap:2px}
 .face b{font-size:2rem;line-height:1}
 .face.sel{border-color:var(--plum);background:var(--hl)}
-.codebox{font-family:ui-monospace,"Courier New",monospace;font-size:1.8rem;font-weight:700;letter-spacing:.1em;
+.codebox{font-family:ui-monospace,"Courier New",monospace;font-size:clamp(1.15rem,5.2vw,1.8rem);overflow-wrap:anywhere;max-width:100%;font-weight:700;letter-spacing:.1em;
   background:var(--surface2);border:3px dashed var(--plum);border-radius:14px;padding:8px 18px;user-select:all;color:var(--plum)}
 .panel{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .panel p{margin:0}
 .muted{color:var(--muted);font-size:.95rem}
 .codein{display:flex;gap:8px;flex-wrap:wrap}
 .codein input{font:inherit;font-family:ui-monospace,monospace;font-size:1.2rem;letter-spacing:.08em;text-transform:uppercase;
-  padding:8px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface2);color:var(--ink);flex:1;min-width:0}
+  padding:8px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface2);color:var(--ink);flex:1 1 200px;min-width:0}
 textarea{font:inherit;font-family:ui-monospace,monospace;font-size:1rem;padding:10px 12px;border-radius:12px;border:2px solid var(--line);
   background:var(--surface2);color:var(--ink);width:100%;min-height:130px;resize:vertical}
 .table-wrap{overflow-x:auto}
@@ -259,6 +259,33 @@ details summary{cursor:pointer;font-family:var(--display);color:var(--plum);font
 .animal{font-size:2.2rem;width:64px;height:64px;border-radius:16px;border:3px solid var(--line);background:var(--surface2);padding:0;line-height:1}
 .animal.sel{border-color:var(--plum);background:var(--hl)}
 .namein{font:inherit;font-size:1.3rem;padding:8px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface2);color:var(--ink);width:min(320px,100%)}
+/* Fußzeile */
+.foot{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;color:#9fb0cc;font-size:.9rem;padding-top:6px}
+.foot button{background:none;border:none;color:#c9d6ea;text-decoration:underline;text-underline-offset:3px;padding:6px 4px;font-size:.9rem}
+.legal h3{margin-top:4px}.legal p{max-width:65ch}
+
+/* Lehrkräftebereich */
+.t-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.t-out{display:flex;flex-direction:column;gap:18px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--surface2);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi b{font-family:var(--display);font-size:1.5rem;color:var(--plum);font-variant-numeric:tabular-nums}
+.kpi span{font-size:.88rem;color:var(--muted)}
+.kpi.warn{background:var(--badbg)}.kpi.warn b{color:var(--accent);font-size:1.15rem}
+.ex-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.exs{border:2px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.exs h3{font-size:1.1rem}.exs p{margin:0;font-size:.93rem}
+.bar{height:12px;border-radius:999px;background:var(--surface2);overflow:hidden}
+.bar i{display:block;height:100%}
+.bar .good{background:#3f9d63}.bar .mid{background:#e0a92b}.bar .low{background:var(--accent)}
+.lowlist{color:var(--accent);font-weight:700}
+.t-table td.c-good{background:#dcefe2}.t-table td.c-mid{background:#fbefcf}.t-table td.c-low{background:#f6d6d3}
+.t-table td.none{color:var(--muted)}
+.t-table td small{color:var(--muted)}
+.tips{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px}
+.pinbox input{max-width:220px;letter-spacing:.3em;text-transform:none}
+.startcode{border-top:2px dashed var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.codewarn{margin:0;background:var(--hl);color:var(--ink);border-radius:12px;padding:8px 12px;font-weight:700;max-width:520px}
 .confirm{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;font-size:.9rem}
 
 /* Schatzkiste */
@@ -309,6 +336,7 @@ details summary{cursor:pointer;font-family:var(--display);color:var(--plum);font
   </div>
 
   <main id="main"></main>
+  <footer class="foot"><button type="button" id="legalBtn">Impressum &amp; Datenschutz</button><span aria-hidden="true">·</span><button type="button" id="teacherBtn">Für Lehrkräfte</button></footer>
 </div>
 
 <script>
@@ -358,20 +386,20 @@ const PIC={Vater:'👨‍👧',Vogel:'🐦',vier:'🍎🍎🍎🍎',viel:'🍬�
   versuchen:'🎯',verrückt:'🤪',versprechen:'🤞',Vorfahrt:'🚦',
   Vogelspinne:'🕷️',Verband:'🩹',Vogelscheuche:'🌾🎃',Vogelhäuschen:'🐦🏠',Veilchen:'🌸',Vorhang:'🎭',Vollmond:'🌕',Detektiv:'🕵️',
   Stativ:'📷',Vanilleeis:'🍦',Villa:'🏚️',Olivenbaum:'🫒🌳',Lavendel:'💜🌿',Ventilator:'🌀',Avocado:'🥑'};
-const ANIMALS=[['🦊','Fuchs'],['🐻','Bär'],['🐸','Frosch'],['🦉','Eule'],['🐱','Katze'],['🐶','Hund'],['🐰','Hase'],['🦄','Einhorn'],['🐢','Schildkröte'],['🦇','Fledermaus']];
+const ANIMALS=[['🦊','Fuchs'],['🐻','Bär'],['🐸','Frosch'],['🦉','Eule'],['🐱','Katze'],['🐶','Hund'],['🐰','Hase'],['🦄','Einhorn'],['🐢','Schildkröte'],['🦇','Fledermaus'],['🐧','Pinguin']];
 
-/* ---------- Speicher: mehrere Kinder pro Gerät ---------- */
-const KEY='valentin-v-woerter-2';
-function fresh(){return {points:0,stars:[0,0,0,0,0,0],fb:[0,0,0,0,0,0],miss:{},equip:[]};}
+/* ---------- Kein Speichern auf dem Gerät ----------
+   Der Fortschritt lebt nur, solange die Seite offen ist. Weiterspielen geht nur mit dem Code.
+   Alte Daten aus früheren Versionen werden beim Start vom Gerät gelöscht. */
+try{['valentin-v-woerter-1','valentin-v-woerter-2'].forEach(k=>localStorage.removeItem(k));}catch(e){}
+/* err = Fehler in der besten Runde (-1 = noch nicht gespielt), rounds = gespielte Runden */
+function fresh(){return {points:0,stars:[0,0,0,0,0,0],fb:[0,0,0,0,0,0],err:[-1,-1,-1,-1,-1,-1],rounds:[0,0,0,0,0,0],miss:{},equip:[]};}
+const starsFromErr=e=>e<0?0:e<=1?3:e<=3?2:1;
+function applyCode(s,r){s.points=r.points;s.fb=r.fb.slice();s.err=r.err.slice();s.rounds=r.rounds.slice();s.stars=r.stars.slice();}
 let DB={players:[],cur:null,auto:true,syl:true};
-try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&Array.isArray(d.players))DB=Object.assign(DB,d);}catch(e){}
-try{ /* Fortschritt aus der ersten Version übernehmen */
-  if(!DB.players.length){const o=JSON.parse(localStorage.getItem('valentin-v-woerter-1')||'null');
-    if(o&&typeof o.points==='number'&&o.points>0){const s=fresh();s.points=o.points;(o.stars||[]).forEach((v,k)=>s.stars[k]=v);(o.fb||[]).forEach((v,k)=>s.fb[k]=v);
-      DB.players.push({id:'p1',name:'',ani:0,s});DB.cur='p1';}}
-}catch(e){}
-DB.players.forEach(p=>{const f=fresh();p.s=Object.assign(f,p.s||{});while(p.s.stars.length<NEX)p.s.stars.push(0);while(p.s.fb.length<NEX)p.s.fb.push(0);});
-function save(){try{localStorage.setItem(KEY,JSON.stringify(DB));}catch(e){}}
+function save(){}
+/* Warnung beim Schließen, solange es Fortschritt gibt */
+window.addEventListener('beforeunload',e=>{if(DB.players.some(p=>p.s.points>0)){e.preventDefault();e.returnValue='';}});
 const P=()=>DB.players.find(p=>p.id===DB.cur)||null;
 const S=()=>{const p=P();return p?p.s:fresh();};
 const pname=p=>p.name||ANIMALS[p.ani][1];
@@ -521,7 +549,7 @@ const EX=[
     tip:'Sprich das Wort langsam und laut. Klingt das V wie F, so wie bei Vater Vladimir? Oder wie W, so wie bei Vampir Valentin?',
     explain:a==='f'?'Bei „'+w+'“ klingt das V wie F. Das Wort gehört zu Vater Vladimir.':'Bei „'+w+'“ klingt das V wie W. Das Wort gehört zu Vampir Valentin.'};});}},
  {name:'V oder F?',intro:'Hier fehlt der erste Buchstabe. Ist es V oder F? Denk an die Merkwörter!',
-  make(){return choose(GAP,10,x=>plain(x[0])).map(([s,l])=>{const w=plain(s);return {
+  make(){return choose(GAP,8,x=>plain(x[0])).map(([s,l])=>{const w=plain(s);return {
     kind:'gap',key:w,syl:s,word:w,answer:l,read:w,
     tip:'Die meisten Wörter mit f-Laut schreibt man mit F. Nur Merkwörter wie Vater, Vogel, vier, viel, voll, von und vor schreibt man mit V. Auch ver- und vor- am Anfang schreibt man immer mit V.',
     explain:l==='V'?'„'+w+'“ ist ein Merkwort. Es wird mit V geschrieben.':'„'+w+'“ schreibt man ganz normal mit F.'};});}},
@@ -680,8 +708,20 @@ function players(){
   h+='<div class="panel"><h2>'+(DB.players.length?'Neues Kind':'Wer bist du?')+'</h2><p>Such dir ein Tier aus:</p><div class="animals">'+
     ANIMALS.map((a,k)=>'<button class="animal'+(k===sel?' sel':'')+'" type="button" data-ani="'+k+'" aria-label="'+a[1]+'">'+a[0]+'</button>').join('')+'</div>'+
     '<p>Dein Name (wenn du willst):</p><input class="namein" id="nameIn" maxlength="14" autocomplete="off" aria-label="Dein Name">'+
-    '<div class="row" style="justify-content:flex-start"><button class="btn accent" type="button" id="newP">Los geht’s!</button></div></div>';
+    '<div class="row" style="justify-content:flex-start"><button class="btn accent" type="button" id="newP">Neu anfangen</button></div>'+
+    '<div class="startcode"><p><b>Du hast schon einen Code?</b> Dann gib ihn hier ein und spiel weiter.</p>'+
+    '<div class="codein"><input id="startCode" placeholder="V-ABCD-EFGH-JKLM" autocomplete="off" aria-label="Dein Code"><button class="btn" type="button" id="codeP">Mit Code weiterspielen</button></div>'+
+    '<p class="muted" id="startMsg"></p></div></div>';
   main.innerHTML=h;
+  $('#codeP').onclick=()=>{
+    const r=readCode($('#startCode').value);
+    if(!r){$('#startMsg').textContent='Dieser Code stimmt nicht. Prüfe jeden Buchstaben und jede Zahl.';say('Hmm, der Code passt nicht. Schau noch einmal genau hin.','sad',true);return;}
+    const s=fresh();applyCode(s,r);
+    s.equip=ITEMS.filter((_,k)=>s.points>=(k+1)*100).slice(-1).map(i=>i.id);
+    const p={id:'p'+Date.now().toString(36),name:$('#nameIn').value.trim().slice(0,14),ani:(r.ani!=null&&r.ani<ANIMALS.length)?r.ani:sel,s};
+    DB.players.push(p);DB.cur=p.id;refresh();home();
+    say('Willkommen zurück, '+pname(p)+'! Du hast schon '+r.points+' Punkte gesammelt.','happy',true);
+  };
   main.querySelectorAll('[data-ani]').forEach(b=>b.onclick=()=>{sel=+b.dataset.ani;main.querySelectorAll('.animal').forEach(x=>x.classList.toggle('sel',x===b));speak(ANIMALS[sel][1]);});
   main.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{DB.cur=b.dataset.pick;save();refresh();home();});
   main.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{
@@ -696,7 +736,7 @@ function players(){
     const p={id:'p'+Date.now().toString(36),name,ani:sel,s:fresh()};
     DB.players.push(p);DB.cur=p.id;save();refresh();home();
   };
-  say(DB.players.length?'Wer spielt jetzt? Tippe auf dein Tier oder melde ein neues Kind an.':'Hallo! Ich bin Valentin, der kleine Vampir. Such dir zuerst ein Tier aus und schreib deinen Namen dazu.',null,true);
+  say(DB.players.length?'Wer spielt jetzt? Tippe auf dein Tier oder melde ein neues Kind an.':'Hallo! Ich bin Valentin, der kleine Vampir. Such dir ein Tier aus und schreib deinen Namen dazu. Wenn du schon einen Code hast, gib ihn unten ein.',null,true);
 }
 function refresh(){updatePoints(false);updatePlayerBtn();drawMascot();}
 
@@ -911,9 +951,11 @@ function next(){if(!R)return;clearTimeout(R.timer);R.idx++;if(R.idx<R.items.leng
 /* ---------- Ergebnis ---------- */
 function result(){
   const s=S(),i=R.ex;
-  const max=R.items.length*10,ratio=R.earned/max;
-  const st=ratio>=.9?3:ratio>=.65?2:1;
-  s.stars[i]=Math.max(s.stars[i],st);save();
+  const errors=R.results.filter(x=>x!==2).length;
+  const st=starsFromErr(errors);
+  s.rounds[i]=Math.min(3,s.rounds[i]+1);
+  s.err[i]=s.err[i]<0?errors:Math.min(s.err[i],errors);
+  s.stars[i]=starsFromErr(s.err[i]);save();
   const right=R.results.filter(x=>x>0).length;
   const pos=ORDER.indexOf(i),nx=ORDER[(pos+1)%ORDER.length];
   main.innerHTML=stageWrap(i,'<div class="result"><h2>'+EX[i].name+' geschafft!</h2>'+starsHTML(st)+
@@ -921,7 +963,7 @@ function result(){
     '<h3>Wie war die Übung für dich?</h3><div class="faces" id="faces">'+
     [[1,'😊','leicht'],[2,'😐','mittel'],[3,'😟','schwer']].map(([v,f,t])=>'<button class="face'+(s.fb[i]===v?' sel':'')+'" type="button" data-v="'+v+'"><b>'+f+'</b>'+t+'</button>').join('')+
     '</div><p class="muted" id="fbThanks">'+(s.fb[i]?'Danke für deine Rückmeldung!':'Tippe auf ein Gesicht.')+'</p>'+
-    '<h3>Dein Code</h3><div class="codebox">'+makeCode(s)+'</div><p class="muted">Schreib dir den Code auf. Er merkt sich deine Punkte, Sterne und Rückmeldungen.</p>'+
+    '<h3>Dein Code</h3><div class="codebox">'+makeCode(s)+'</div><p class="codewarn">Schreib dir den Code jetzt auf! Die App speichert nichts. Nur mit dem Code kannst du später weiterspielen.</p>'+
     '<div class="row">'+(allDone()?'<button class="btn accent" type="button" id="toUrk">Meine Urkunde</button>':'')+
     '<button class="btn'+(allDone()?' ghost':' accent')+'" type="button" id="nextEx">Nächste Übung: '+EX[nx].name+'</button>'+
     '<button class="btn ghost" type="button" id="again">Nochmal spielen</button><button class="btn ghost" type="button" id="back">Zur Übersicht</button></div></div>');
@@ -938,40 +980,66 @@ function result(){
 }
 
 /* ---------- Codes ----------
-   Neu (8 Zeichen): Punkte 11 Bit, Sterne 6×2 Bit, Rückmeldung 6×2 Bit, verschleiert, plus Prüfzeichen.
-   Alte Codes aus Version 1 (7 Zeichen, 4 Übungen) werden weiter gelesen. */
-const AL='23456789ABCDEFGHJKLMNPQRSTUVWXYZ',MASK1=0x2B5C3A9,MASK2=BigInt('0x5A3C96B2D');
-function makeCode(s){
-  let v=BigInt(Math.min(2047,s.points));
-  for(let k=0;k<NEX;k++){v|=BigInt(s.stars[k]&3)<<BigInt(11+2*k);v|=BigInt(s.fb[k]&3)<<BigInt(23+2*k);}
-  v^=MASK2;
-  let c='';for(let k=0;k<7;k++){c=AL[Number(v%32n)]+c;v/=32n;}
-  let sum=0;for(let k=0;k<7;k++)sum+=(k+3)*AL.indexOf(c[k]);
-  c+=AL[sum%32];
-  return 'V-'+c.slice(0,4)+'-'+c.slice(4);
+   Aktuell (12 Zeichen, V-XXXX-XXXX-XXXX): 11 Datenzeichen = 55 Bit, plus Prüfzeichen.
+   Punkte/5 (9 Bit) | je Übung: Fehler in bester Runde 0–7 (3 Bit), Runden 0–3 (2 Bit), Einschätzung (2 Bit) | Tier (4 Bit)
+   Ältere Codes (8 und 7 Zeichen) werden weiter gelesen, liefern aber nur Sterne. */
+const AL='23456789ABCDEFGHJKLMNPQRSTUVWXYZ',MASK1=0x2B5C3A9,MASK2=BigInt('0x5A3C96B2D'),MASK3=BigInt('0x5B2D19C3A6E47');
+function checkChar(c){let sum=0;for(let k=0;k<c.length;k++)sum+=(k+3)*AL.indexOf(c[k]);return AL[sum%32];}
+function makeCode(s,ani){
+  if(ani==null)ani=P()?P().ani:0;
+  let v=BigInt(Math.min(511,Math.round(s.points/5)));let sh=9n;
+  for(let k=0;k<NEX;k++){
+    const played=s.rounds[k]>0;
+    v|=BigInt(played?Math.min(7,Math.max(0,s.err[k])):0)<<sh;sh+=3n;
+    v|=BigInt(Math.min(3,s.rounds[k]))<<sh;sh+=2n;
+    v|=BigInt(s.fb[k]&3)<<sh;sh+=2n;
+  }
+  v|=BigInt(ani&15)<<sh;
+  v^=MASK3;
+  let c='';for(let k=0;k<11;k++){c=AL[Number(v%32n)]+c;v/=32n;}
+  c+=checkChar(c);
+  return 'V-'+c.slice(0,4)+'-'+c.slice(4,8)+'-'+c.slice(8);
+}
+function decodeV3(s){
+  if(s.length!==12)return null;for(const ch of s)if(AL.indexOf(ch)<0)return null;
+  if(checkChar(s.slice(0,11))!==s[11])return null;
+  let v=0n;for(let k=0;k<11;k++)v=v*32n+BigInt(AL.indexOf(s[k]));
+  v^=MASK3;
+  const get=n=>{const x=Number(v&((1n<<BigInt(n))-1n));v>>=BigInt(n);return x;};
+  const out={points:get(9)*5,err:[],rounds:[],fb:[],stars:[]};
+  for(let k=0;k<NEX;k++){const e=get(3),r=get(2),f=get(2);out.rounds.push(r);out.err.push(r?e:-1);out.fb.push(f);out.stars.push(starsFromErr(r?e:-1));}
+  out.ani=get(4);
+  if(out.ani>=ANIMALS.length)return null;
+  return out;
+}
+function fromStars(points,stars,fb){
+  const errFor={3:1,2:3,1:5};
+  return {points,stars,fb,legacy:true,rounds:stars.map(x=>x?1:0),err:stars.map(x=>x?errFor[x]:-1)};
 }
 function decodeNew(s){
   if(s.length!==8)return null;for(const ch of s)if(AL.indexOf(ch)<0)return null;
-  let sum=0;for(let k=0;k<7;k++)sum+=(k+3)*AL.indexOf(s[k]);if(AL[sum%32]!==s[7])return null;
+  if(checkChar(s.slice(0,7))!==s[7])return null;
   let v=0n;for(let k=0;k<7;k++)v=v*32n+BigInt(AL.indexOf(s[k]));
   v^=MASK2;
-  const out={points:Number(v&2047n),stars:[],fb:[]};
-  for(let k=0;k<NEX;k++){out.stars.push(Number((v>>BigInt(11+2*k))&3n));out.fb.push(Number((v>>BigInt(23+2*k))&3n));}
-  return out;
+  const stars=[],fb=[];
+  for(let k=0;k<NEX;k++){stars.push(Number((v>>BigInt(11+2*k))&3n));fb.push(Number((v>>BigInt(23+2*k))&3n));}
+  return fromStars(Number(v&2047n),stars,fb);
 }
 function decodeOld(s){
   if(s.length!==7)return null;for(const ch of s)if(AL.indexOf(ch)<0)return null;
-  let sum=0;for(let k=0;k<6;k++)sum+=(k+3)*AL.indexOf(s[k]);if(AL[sum%32]!==s[6])return null;
+  if(checkChar(s.slice(0,6))!==s[6])return null;
   let v=0;for(let k=0;k<6;k++)v=v*32+AL.indexOf(s[k]);
   if(v>=Math.pow(2,27))return null;
   v=(v^MASK1)>>>0;
-  const out={points:v&2047,stars:[0,0,0,0,0,0],fb:[0,0,0,0,0,0]};
-  for(let k=0;k<4;k++){out.stars[k]=(v>>>(11+2*k))&3;out.fb[k]=(v>>>(19+2*k))&3;}
-  return out;
+  const stars=[0,0,0,0,0,0],fb=[0,0,0,0,0,0];
+  for(let k=0;k<4;k++){stars[k]=(v>>>(11+2*k))&3;fb[k]=(v>>>(19+2*k))&3;}
+  return fromStars(v&2047,stars,fb);
 }
 function readCode(raw){
   const s=(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
   const tries=[];
+  if(s.length===13&&s[0]==='V')tries.push(()=>decodeV3(s.slice(1)));
+  if(s.length===12)tries.push(()=>decodeV3(s));
   if(s.length===9&&s[0]==='V')tries.push(()=>decodeNew(s.slice(1)));
   if(s.length===8){tries.push(()=>decodeNew(s));if(s[0]==='V')tries.push(()=>decodeOld(s.slice(1)));}
   if(s.length===7)tries.push(()=>decodeOld(s));
@@ -982,68 +1050,173 @@ function readCode(raw){
 function codePage(){
   leave();if(!P())return players();
   const s=S(),code=makeCode(s);
-  main.innerHTML='<div class="panel"><h2>Mein Code</h2><p>Dein Code speichert deine Punkte, deine Sterne und wie du die Übungen fandest. Schreib ihn ins Heft oder zeig ihn deiner Lehrerin oder deinem Lehrer.</p>'+
+  main.innerHTML='<div class="panel"><h2>Mein Code</h2><p>Dein Code speichert deine Punkte, dein Tier, deine Sterne und wie du die Übungen fandest. Schreib ihn ins Heft oder zeig ihn deiner Lehrerin oder deinem Lehrer.</p>'+
     '<div class="row"><div class="codebox" id="code">'+code+'</div></div>'+
     '<div class="row"><button class="btn ghost" type="button" id="copy">Code kopieren</button><button class="btn ghost" type="button" id="readC">Code vorlesen</button></div>'+
     '<p class="muted" id="copyMsg"></p></div>'+
     '<div class="panel"><h2>Weiterspielen mit Code</h2><p>Du hast schon einen Code? Gib ihn hier ein, dann geht es mit deinen Punkten weiter.</p>'+
-    '<div class="codein"><input id="codeIn" placeholder="V-ABCD-EFGH" aria-label="Code eingeben"><button class="btn" type="button" id="load">Code laden</button></div><p class="muted" id="loadMsg"></p></div>'+
-    '<div class="panel"><details><summary>Für Lehrkräfte: Klassenübersicht</summary><div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">'+
-    '<p class="muted">Eine Zeile pro Kind, zum Beispiel <code>Mia: V-ABCD-EFGH</code>. Der Name ist freiwillig. Alte Codes aus der ersten Version funktionieren auch.</p>'+
-    '<textarea id="classIn" aria-label="Codes der Klasse" placeholder="Mia: V-ABCD-EFGH"></textarea>'+
-    '<div class="row" style="justify-content:flex-start"><button class="btn" type="button" id="check">Auswerten</button></div><div id="checkOut"></div></div></details></div>'+
+    '<div class="codein"><input id="codeIn" placeholder="V-ABCD-EFGH-JKLM" aria-label="Code eingeben"><button class="btn" type="button" id="load">Code laden</button></div><p class="muted" id="loadMsg"></p></div>'+
     '<div class="panel"><h2>Einstellungen</h2><label class="switch"><input type="checkbox" id="autoSpeak"'+(DB.auto?' checked':'')+'> Valentin liest automatisch vor</label>'+
     '<label class="switch"><input type="checkbox" id="sylOn"'+(DB.syl?' checked':'')+'> Wörter in Silben zeigen (Silbenbögen)</label>'+
     (canSpeak?'':'<p class="muted">Dieses Gerät kann leider nicht vorlesen. Probiere einen anderen Browser, zum Beispiel Chrome oder Safari.</p>')+
-    '<p class="muted">Der Fortschritt bleibt auf diesem Gerät gespeichert. Mit dem Code geht er auch auf einem anderen Gerät weiter.</p></div>';
+    '<p class="muted">Die App speichert nichts auf dem Gerät. Wenn du die Seite schließt, ist dein Fortschritt weg. Mit deinem Code kannst du an jedem Gerät weiterspielen.</p></div>';
   $('#copy').onclick=()=>{
     const done=()=>$('#copyMsg').textContent='Kopiert!';
     const sel=()=>{const r=document.createRange();r.selectNodeContents($('#code'));const g=getSelection();g.removeAllRanges();g.addRange(r);$('#copyMsg').textContent='Der Code ist markiert. Du kannst ihn jetzt kopieren.';};
     try{navigator.clipboard.writeText(code).then(done,sel);}catch(e){sel();}
   };
-  $('#readC').onclick=()=>speak('Dein Code lautet: '+code.replace(/-/g,' Strich ').split('').join(' '));
+  $('#readC').onclick=()=>speak('Dein Code lautet: '+code.replace(/-/g,' Strich ').split('').join(' '),.7);
   $('#load').onclick=()=>{
     const r=readCode($('#codeIn').value);
     if(!r){$('#loadMsg').textContent='Dieser Code stimmt nicht. Prüfe jeden Buchstaben und jede Zahl.';say('Hmm, der Code passt nicht. Schau noch einmal genau hin.','sad',true);return;}
-    s.points=r.points;s.stars=r.stars;s.fb=r.fb;save();refresh();
+    applyCode(s,r);if(r.ani!=null&&r.ani<ANIMALS.length)P().ani=r.ani;refresh();
     $('#loadMsg').textContent='Geladen! Du hast '+r.points+' Punkte.';
     say('Willkommen zurück! Du hast schon '+r.points+' Punkte gesammelt.','happy',true);
   };
-  $('#check').onclick=()=>classReport($('#classIn').value);
-  $('#autoSpeak').onchange=e=>{DB.auto=e.target.checked;save();};
-  $('#sylOn').onchange=e=>{DB.syl=e.target.checked;save();};
+  $('#autoSpeak').onchange=e=>{DB.auto=e.target.checked;};
+  $('#sylOn').onchange=e=>{DB.syl=e.target.checked;};
   say('Hier ist dein Code. Damit kannst du deinen Punktestand festhalten.',null,false);
 }
+
+/* ---------- Lehrkräftebereich ----------
+   Schutz per PIN. Gespeichert ist nur ein SHA-256-Fingerabdruck der PIN, nicht die PIN selbst.
+   Das hält Kinder fern, ist aber kein Schutz gegen Fachleute: Die Seite läuft komplett im Browser. */
+const PIN_HASH='e70b1d4f5efc615b2f8319140f18e582552974bc313045e0399e97868794f97c';
+let teacherOpen=false,pinFails=0,pinLockUntil=0,classText='';
+async function sha256(t){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function teacherGate(){
+  leave();
+  if(teacherOpen)return teacher();
+  main.innerHTML='<div class="panel pinbox"><h2>Bereich für Lehrkräfte</h2><p>Bitte gib die PIN ein.</p>'+
+    '<form class="codein" id="pinForm"><input id="pinIn" type="password" inputmode="numeric" autocomplete="off" maxlength="12" aria-label="PIN"><button class="btn" type="submit">Öffnen</button></form>'+
+    '<p class="muted" id="pinMsg"></p><div class="row" style="justify-content:flex-start"><button class="btn ghost small" type="button" id="pinBack">Zurück</button></div></div>';
+  $('#pinBack').onclick=home;
+  setTimeout(()=>{try{$('#pinIn').focus();}catch(e){}},50);
+  $('#pinForm').onsubmit=async ev=>{
+    ev.preventDefault();
+    const msg=$('#pinMsg');
+    if(Date.now()<pinLockUntil){msg.textContent='Zu viele Versuche. Bitte warte '+Math.ceil((pinLockUntil-Date.now())/1000)+' Sekunden.';return;}
+    if(!(window.crypto&&crypto.subtle)){msg.textContent='Dieser Browser kann die PIN hier nicht prüfen. Öffne die App über die Internetadresse (https).';return;}
+    const h=await sha256('valentin-v-lehrkraft:'+$('#pinIn').value.trim());
+    if(h===PIN_HASH){teacherOpen=true;pinFails=0;teacher();return;}
+    pinFails++;$('#pinIn').value='';
+    if(pinFails>=5){pinLockUntil=Date.now()+60000;pinFails=0;msg.textContent='Zu viele falsche Versuche. Bitte warte eine Minute.';}
+    else msg.textContent='Die PIN stimmt nicht.';
+  };
+}
+function teacher(){
+  leave();
+  main.innerHTML='<div class="panel"><div class="t-head"><h2>Klassenauswertung</h2><button class="btn ghost small" type="button" id="tLock">Bereich schließen</button></div>'+
+    '<p class="muted">Eine Zeile pro Kind, zum Beispiel <code>Mia: V-ABCD-EFGH-JKLM</code>. Der Name ist freiwillig. Ohne Namen zeigt die Auswertung das Tier des Kindes. Ältere, kürzere Codes werden erkannt, liefern aber nur Sterne.</p>'+
+    '<textarea id="classIn" aria-label="Codes der Klasse" placeholder="Mia: V-ABCD-EFGH-JKLM&#10;Tom: V-…">'+esc(classText)+'</textarea>'+
+    '<div class="row" style="justify-content:flex-start"><button class="btn" type="button" id="check">Auswerten</button></div></div><div id="checkOut" class="t-out"></div>';
+  $('#tLock').onclick=()=>{teacherOpen=false;classText='';home();};
+  $('#check').onclick=()=>{classText=$('#classIn').value;classReport(classText);};
+  if(classText)classReport(classText);
+  say('Hier ist der Bereich für Lehrkräfte.',null,false,'vlad');
+}
+const FOCUS=['Laute unterscheiden: V wie F oder V wie W','Merkwörter: V oder F am Wortanfang','Richtige Schreibweise erkennen','Merkwörter nach Gehör schreiben, auch Groß und Klein','Wortbausteine ver- und vor-','Merkwörter aus dem Gedächtnis schreiben'];
+const SHORT=['Hör-Sortierer','V oder F?','Detektiv','Hör-Diktat','Baumeister','Blitz-Merker'];
 function classReport(text){
   const rows=[];const bad=[];
   text.split(/[\r\n]+/).forEach(line=>{
     if(!line.trim())return;
-    const m=line.match(/V-?[A-Za-z0-9]{3,4}-?[A-Za-z0-9]{4}/i);
+    const m=line.match(/V-?[A-Za-z0-9]{3,4}-?[A-Za-z0-9]{4}(?:-?[A-Za-z0-9]{4})?/i);
     const r=m?readCode(m[0]):null;
     if(!r){bad.push(line.trim());return;}
-    const name=line.replace(m[0],'').replace(/[:;,|=]+/g,' ').trim()||('Kind '+(rows.length+1));
+    const typed=line.replace(m[0],'').replace(/[:;,|=\t]+/g,' ').trim();
+    const name=typed||(r.ani!=null?ANIMALS[r.ani][1]+' '+ANIMALS[r.ani][0]:'Kind '+(rows.length+1));
     rows.push({name,r});
   });
   const out=$('#checkOut');
-  if(!rows.length){out.innerHTML='<p class="feedback bad"><span>Ich habe keinen gültigen Code gefunden. Prüfe die Schreibweise.</span></p>';return;}
-  const short=['Sortierer','V/F','Detektiv','Diktat','Baumeister','Blitz'];
-  const fbT=['','😊','😐','😟'];
-  const avg=ORDER.map(i=>{const d=rows.filter(x=>x.r.stars[i]>0);return {i,n:d.length,avg:d.length?d.reduce((a,x)=>a+x.r.stars[i],0)/d.length:0,hard:rows.filter(x=>x.r.fb[i]===3).length};});
-  let worst=avg.filter(a=>a.n).sort((a,b)=>(b.hard-a.hard)||(a.avg-b.avg))[0];
-  let h='<p><b>'+rows.length+' Kinder</b> ausgewertet'+(bad.length?', '+bad.length+' Zeile(n) ohne gültigen Code':'')+'.'+
-    (worst&&(worst.hard||worst.avg<2.5)?' Am schwersten: <b>'+EX[worst.i].name+'</b> (Ø '+worst.avg.toFixed(1).replace('.',',')+' Sterne, '+worst.hard+'× „schwer“).':'')+'</p>';
-  h+='<div class="table-wrap"><table><thead><tr><th>Name</th><th>Punkte</th>'+ORDER.map(i=>'<th>'+short[i]+'</th>').join('')+'</tr></thead><tbody>'+
-    rows.map(x=>'<tr><td>'+esc(x.name)+'</td><td>'+x.r.points+'</td>'+ORDER.map(i=>'<td'+(x.r.fb[i]===3?' class="hard"':'')+'>'+(x.r.stars[i]?'★'.repeat(x.r.stars[i]):'–')+' '+fbT[x.r.fb[i]]+'</td>').join('')+'</tr>').join('')+
-    '</tbody><tfoot><tr><td>Ø Sterne</td><td>'+Math.round(rows.reduce((a,x)=>a+x.r.points,0)/rows.length)+'</td>'+avg.map(a=>'<td>'+(a.n?a.avg.toFixed(1).replace('.',','):'–')+'</td>').join('')+'</tr>'+
-    '<tr><td>„schwer“</td><td></td>'+avg.map(a=>'<td>'+a.hard+'</td>').join('')+'</tr></tfoot></table></div>';
-  if(bad.length)h+='<p class="muted">Nicht erkannt: '+bad.map(esc).join(' · ')+'</p>';
+  if(!rows.length){out.innerHTML='<div class="panel"><p class="feedback bad"><span>Ich habe keinen gültigen Code gefunden. Prüfe die Schreibweise.</span></p></div>';return;}
+  const N=rows.length,fbT=['','😊','😐','😟'],fbW=['','leicht','mittel','schwer'];
+  const right=e=>8-e;
+  const lvl=e=>e<0?'':e<=1?'good':e<=3?'mid':'low';
+  /* Übersicht je Übung */
+  const sum=ORDER.map(i=>{
+    const pl=rows.filter(x=>x.r.rounds[i]>0&&!x.r.legacy);
+    const avg=pl.length?pl.reduce((a,x)=>a+right(x.r.err[i]),0)/pl.length:0;
+    return {i,played:pl.length,avg,hard:rows.filter(x=>x.r.fb[i]===3).length,
+      low:pl.filter(x=>x.r.err[i]>=4).map(x=>x.name),open:rows.filter(x=>!x.r.rounds[i]).map(x=>x.name)};
+  });
+  const avgPts=Math.round(rows.reduce((a,x)=>a+x.r.points,0)/N);
+  const done=rows.filter(x=>x.r.rounds.every(r=>r>0)).length;
+  const worst=sum.filter(a=>a.played).sort((a,b)=>(a.avg-b.avg)||(b.hard-a.hard))[0];
+  let h='<div class="panel"><h2>Auf einen Blick</h2><div class="kpis">'+
+    '<div class="kpi"><b>'+N+'</b><span>Kinder</span></div>'+
+    '<div class="kpi"><b>'+avgPts+'</b><span>Ø Punkte</span></div>'+
+    '<div class="kpi"><b>'+done+' / '+N+'</b><span>haben alle Übungen gemacht</span></div>'+
+    (worst?'<div class="kpi warn"><b>'+EX[worst.i].name+'</b><span>am schwersten (Ø '+worst.avg.toFixed(1).replace('.',',')+' von 8 richtig)</span></div>':'')+
+    '</div>'+(bad.length?'<p class="muted">Nicht erkannt: '+bad.map(esc).join(' · ')+'</p>':'')+'</div>';
+  /* Übungen */
+  h+='<div class="panel"><h2>Übungen</h2><div class="ex-sum">'+sum.map(a=>
+    '<div class="exs"><h3>'+EX[a.i].name+'</h3><p class="muted">'+FOCUS[a.i]+'</p>'+
+    '<div class="bar" title="Ø richtig"><i class="'+(a.avg>=6.5?'good':a.avg>=4.5?'mid':'low')+'" style="width:'+(a.avg/8*100).toFixed(0)+'%"></i></div>'+
+    '<p><b>'+(a.played?a.avg.toFixed(1).replace('.',',')+' von 8':'–')+'</b> richtig im Schnitt · gespielt von '+rows.filter(x=>x.r.rounds[a.i]>0).length+' / '+N+' · '+a.hard+'× „schwer“</p>'+
+    (a.low.length?'<p class="lowlist">Unter 5 richtig: '+a.low.map(esc).join(', ')+'</p>':'')+
+    (a.open.length&&a.open.length<N?'<p class="muted">Noch nicht gespielt: '+a.open.map(esc).join(', ')+'</p>':'')+
+    '</div>').join('')+'</div></div>';
+  /* Tabelle */
+  h+='<div class="panel"><div class="t-head"><h2>Alle Kinder</h2><button class="btn ghost small" type="button" id="copyTab">Tabelle für Excel kopieren</button></div>'+
+    '<p class="muted">Pro Übung: richtige Aufgaben in der besten Runde von 8 · Anzahl Runden · Selbsteinschätzung. Grün 7–8, gelb 5–6, rot 0–4.</p>'+
+    '<div class="table-wrap"><table class="t-table"><thead><tr><th>Kind</th><th>Punkte</th>'+ORDER.map(i=>'<th>'+SHORT[i]+'</th>').join('')+'</tr></thead><tbody>'+
+    rows.map(x=>'<tr><td>'+esc(x.name)+(x.r.legacy?' <span class="muted">(alter Code)</span>':'')+'</td><td>'+x.r.points+'</td>'+ORDER.map(i=>{
+      const e=x.r.err[i],r=x.r.rounds[i];
+      if(!r)return '<td class="none">–'+(x.r.fb[i]?' '+fbT[x.r.fb[i]]:'')+'</td>';
+      const txt=x.r.legacy?'★'.repeat(x.r.stars[i]):(right(e)+'/8');
+      return '<td class="c-'+lvl(e)+'"><b>'+txt+'</b> <small>'+(x.r.legacy?'':(r>=3?'3+':r)+'×')+'</small> '+fbT[x.r.fb[i]]+'</td>';}).join('')+'</tr>').join('')+
+    '</tbody></table></div><p class="muted" id="copyTabMsg"></p></div>';
+  /* Förderhinweise */
+  const tips=rows.map(x=>{
+    const need=ORDER.filter(i=>x.r.rounds[i]>0&&((!x.r.legacy&&x.r.err[i]>=4)||(x.r.legacy&&x.r.stars[i]===1)||x.r.fb[i]===3));
+    const open=ORDER.filter(i=>!x.r.rounds[i]);
+    return {x,need,open};
+  }).filter(t=>t.need.length||t.open.length);
+  h+='<div class="panel"><h2>Förderhinweise</h2>'+(tips.length?'<ul class="tips">'+tips.map(t=>
+    '<li><b>'+esc(t.x.name)+'</b>'+
+    (t.need.length?'<br>Üben: '+t.need.map(i=>FOCUS[i]+' ('+EX[i].name+(t.x.r.fb[i]===3?', selbst „schwer“':'')+')').join('; '):'')+
+    (t.open.length?'<br><span class="muted">Noch offen: '+t.open.map(i=>EX[i].name).join(', ')+'</span>':'')+'</li>').join('')+'</ul>':'<p>Alle Kinder haben alle Übungen gut geschafft.</p>')+'</div>';
   out.innerHTML=h;
+  $('#copyTab').onclick=()=>{
+    const head=['Kind','Punkte'].concat(ORDER.flatMap(i=>[SHORT[i]+' richtig',SHORT[i]+' Runden',SHORT[i]+' Einschätzung']));
+    const lines=[head.join('\t')].concat(rows.map(x=>[x.name,x.r.points].concat(ORDER.flatMap(i=>{
+      const r=x.r.rounds[i];return [r&&!x.r.legacy?right(x.r.err[i]):'',r?(r>=3?'3+':r):0,fbW[x.r.fb[i]]];})).join('\t')));
+    const t=lines.join('\n');
+    const ok=()=>$('#copyTabMsg').textContent='Kopiert! In Excel oder Numbers einfach einfügen.';
+    try{navigator.clipboard.writeText(t).then(ok,()=>{$('#copyTabMsg').textContent='Kopieren ging nicht. Markiere die Tabelle und kopiere sie von Hand.';});}
+    catch(e){$('#copyTabMsg').textContent='Kopieren ging nicht. Markiere die Tabelle und kopiere sie von Hand.';}
+  };
+}
+
+/* ---------- Impressum und Datenschutz ---------- */
+const IMPRESSUM={name:'Christiane Kastrup',strasse:'Im Käulchenshof 10',ort:'53773 Hennef',email:'nc-langnech2@gmx.de',schule:''};
+function impressum(){
+  leave();
+  const I=IMPRESSUM,has=I.name&&I.strasse&&I.ort&&I.email;
+  main.innerHTML='<div class="panel legal"><h2>Impressum</h2>'+
+    (has?'<p><b>Verantwortlich für den Inhalt</b><br>'+esc(I.name)+(I.schule?'<br>'+esc(I.schule):'')+'<br>'+esc(I.strasse)+'<br>'+esc(I.ort)+'</p><p><b>Kontakt</b><br>E-Mail: '+esc(I.email)+'</p>'
+        :'<p class="codewarn">Die Angaben zum Impressum werden noch ergänzt.</p>')+
+    '<h3>Über die App</h3><p>„Valentins V-Wörter“ ist eine kostenlose Übungs-App für die 2. Klasse zur Rechtschreibung von Wörtern mit V. Die Wortauswahl orientiert sich am Grundwortschatz NRW. Die Figuren Vampir Valentin und Vater Vladimir sowie alle Hintergrundbilder sind eigene Zeichnungen. Die kleinen Bilder zu den Wörtern sind Emojis des jeweiligen Geräts.</p>'+
+    '<h2>Datenschutz</h2>'+
+    '<p><b>Keine Speicherung.</b> Die App speichert keine Daten auf dem Gerät und sendet keine Daten an uns. Namen, Punkte und Antworten bleiben nur so lange im Browser, wie die Seite geöffnet ist. Der Fortschritt steckt allein im Code, den das Kind selbst aufschreibt.</p>'+
+    '<p><b>Vorlesen.</b> Die Vorlesefunktion nutzt die Sprachausgabe des Geräts beziehungsweise Browsers.</p>'+
+    '<p><b>Schriftarten.</b> Die Schriften werden von Google Fonts geladen. Dabei wird die IP-Adresse an Google übertragen.</p>'+
+    '<p><b>Hosting.</b> Die Seite wird über GitHub Pages bereitgestellt. GitHub kann dabei technische Zugriffsdaten wie die IP-Adresse verarbeiten.</p>'+
+    '<div class="row" style="justify-content:flex-start"><button class="btn ghost" type="button" id="legalBack">Zurück</button></div></div>';
+  $('#legalBack').onclick=home;
+  say('Hier steht, wer die App gemacht hat.',null,false);
 }
 
 $('#homeBtn').onclick=home;
 $('#codeBtn').onclick=codePage;
 $('#chestBtn').onclick=chest;
 $('#playerBtn').onclick=players;
+$('#legalBtn').onclick=impressum;
+$('#teacherBtn').onclick=teacherGate;
 refresh();
 if(P())home();else players();
 })();
