@@ -396,7 +396,10 @@ try{['valentin-v-woerter-1','valentin-v-woerter-2'].forEach(k=>localStorage.remo
 function fresh(){return {points:0,stars:[0,0,0,0,0,0],fb:[0,0,0,0,0,0],err:[-1,-1,-1,-1,-1,-1],rounds:[0,0,0,0,0,0],miss:{},equip:[]};}
 const starsFromErr=e=>e<0?0:e<=1?3:e<=3?2:1;
 function applyCode(s,r){s.points=r.points;s.fb=r.fb.slice();s.err=r.err.slice();s.rounds=r.rounds.slice();s.stars=r.stars.slice();}
-let DB={players:[],cur:null,auto:true,syl:true};
+/* Automatisches Vorlesen ist aus. Die Lehrkraft schaltet es im Lehrkräftebereich ein
+   oder öffnet die App mit der Adresse …/V-Woerter/#vorlesen */
+const APP_URL='https://pinguin-glitch896.github.io/V-Woerter/';
+let DB={players:[],cur:null,auto:/(^|#)vorlesen$/i.test(location.hash||''),syl:true};
 function save(){}
 /* Warnung beim Schließen, solange es Fortschritt gibt */
 window.addEventListener('beforeunload',e=>{if(DB.players.some(p=>p.s.points>0)){e.preventDefault();e.returnValue='';}});
@@ -1056,7 +1059,7 @@ function codePage(){
     '<p class="muted" id="copyMsg"></p></div>'+
     '<div class="panel"><h2>Weiterspielen mit Code</h2><p>Du hast schon einen Code? Gib ihn hier ein, dann geht es mit deinen Punkten weiter.</p>'+
     '<div class="codein"><input id="codeIn" placeholder="V-ABCD-EFGH-JKLM" aria-label="Code eingeben"><button class="btn" type="button" id="load">Code laden</button></div><p class="muted" id="loadMsg"></p></div>'+
-    '<div class="panel"><h2>Einstellungen</h2><label class="switch"><input type="checkbox" id="autoSpeak"'+(DB.auto?' checked':'')+'> Valentin liest automatisch vor</label>'+
+    '<div class="panel"><h2>Einstellungen</h2><p class="muted">Tippe auf einen Lautsprecher-Knopf, dann liest dir Valentin oder Vladimir etwas vor.</p>'+
     '<label class="switch"><input type="checkbox" id="sylOn"'+(DB.syl?' checked':'')+'> Wörter in Silben zeigen (Silbenbögen)</label>'+
     (canSpeak?'':'<p class="muted">Dieses Gerät kann leider nicht vorlesen. Probiere einen anderen Browser, zum Beispiel Chrome oder Safari.</p>')+
     '<p class="muted">Die App speichert nichts auf dem Gerät. Wenn du die Seite schließt, ist dein Fortschritt weg. Mit deinem Code kannst du an jedem Gerät weiterspielen.</p></div>';
@@ -1073,7 +1076,6 @@ function codePage(){
     $('#loadMsg').textContent='Geladen! Du hast '+r.points+' Punkte.';
     say('Willkommen zurück! Du hast schon '+r.points+' Punkte gesammelt.','happy',true);
   };
-  $('#autoSpeak').onchange=e=>{DB.auto=e.target.checked;};
   $('#sylOn').onchange=e=>{DB.syl=e.target.checked;};
   say('Hier ist dein Code. Damit kannst du deinen Punktestand festhalten.',null,false);
 }
@@ -1112,7 +1114,16 @@ function teacher(){
   main.innerHTML='<div class="panel"><div class="t-head"><h2>Klassenauswertung</h2><button class="btn ghost small" type="button" id="tLock">Bereich schließen</button></div>'+
     '<p class="muted">Eine Zeile pro Kind, zum Beispiel <code>Mia: V-ABCD-EFGH-JKLM</code>. Der Name ist freiwillig. Ohne Namen zeigt die Auswertung das Tier des Kindes. Ältere, kürzere Codes werden erkannt, liefern aber nur Sterne.</p>'+
     '<textarea id="classIn" aria-label="Codes der Klasse" placeholder="Mia: V-ABCD-EFGH-JKLM&#10;Tom: V-…">'+esc(classText)+'</textarea>'+
-    '<div class="row" style="justify-content:flex-start"><button class="btn" type="button" id="check">Auswerten</button></div></div><div id="checkOut" class="t-out"></div>';
+    '<div class="row" style="justify-content:flex-start"><button class="btn" type="button" id="check">Auswerten</button></div></div>'+
+    '<div class="panel"><h2>Vorlesen</h2>'+
+    '<label class="switch"><input type="checkbox" id="autoSpeak"'+(DB.auto?' checked':'')+'> Automatisch vorlesen (Aufgaben, Wörter, Lob und Tipps)</label>'+
+    '<p class="muted">Standardmäßig aus. Die Kinder können es nicht umschalten. Die Einstellung gilt, bis die Seite geschlossen wird. Damit es beim Öffnen gleich an ist, nutze diese Adresse, zum Beispiel als Lesezeichen auf den Tablets:</p>'+
+    '<div class="codein"><input id="speakLink" readonly style="text-transform:none;letter-spacing:0;font-size:1rem" value="'+APP_URL+'#vorlesen" aria-label="Adresse mit Vorlesen"><button class="btn ghost" type="button" id="copyLink">Kopieren</button></div>'+
+    '<p class="muted" id="copyLinkMsg"></p></div>'+
+    '<div id="checkOut" class="t-out"></div>';
+  $('#autoSpeak').onchange=e=>{DB.auto=e.target.checked;if(!DB.auto)speechStop();};
+  $('#copyLink').onclick=()=>{const i=$('#speakLink');const sel=()=>{i.select();$('#copyLinkMsg').textContent='Die Adresse ist markiert. Du kannst sie jetzt kopieren.';};
+    try{navigator.clipboard.writeText(i.value).then(()=>$('#copyLinkMsg').textContent='Kopiert!',sel);}catch(e){sel();}};
   $('#tLock').onclick=()=>{teacherOpen=false;classText='';home();};
   $('#check').onclick=()=>{classText=$('#classIn').value;classReport(classText);};
   if(classText)classReport(classText);
